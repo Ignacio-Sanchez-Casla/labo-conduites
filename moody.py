@@ -1,12 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-
-import os
-here = os.path.dirname(os.path.abspath(__file__))
-os.chdir(here)
-
-
 # Subfunctions
 
 # function Re = Re_t(eD)
@@ -16,6 +10,9 @@ def Re_t(eD):
     phi = (-0.5/np.log10(eD/3.7))**2
     Re = 200/(eD*math.sqrt(phi))
     return Re
+
+
+
 
 # function phi = blasius(Re)
 # returns the friction factor according to Blasius (smooth pipe)
@@ -40,11 +37,7 @@ def cw(eD,Re):
         phi = phi_new
         phi_new = (-0.5/np.log10(eD/3.7+2.51/(Re*math.sqrt(phi))))**2;
     return phi
-
-
 # Plot Moody diagram
-
-#plt.figure(figsize = (10,9))
 
 Re1 = np.linspace(2000,200000,300)
 Re2 = np.linspace(200000,1e8,300)
@@ -83,37 +76,40 @@ plt.legend(edlab,loc = (1,0))
 
 ####exeeeempleee ######"
 
+"""
+matrix = np.loadtxt('k_k.txt', usecols=range(8), delimiter=",")                                            
+np.set_printoptions(suppress=True)
 
-Re_fonce = np.array([ 5242.75106656,  9642.91714027, 13855.84210447, 18724.11095199,
-       21345.48648527])
+DN  = []
+Phi = []
+Re  = []
+K   = []
+Kp  = []
+for i in range(len(matrix)):
+    DN.append(matrix[i][0])
+    Phi.append(matrix[i][1])
+    Re.append(matrix[i][2])
+    K.append(matrix[i][3])
+    Kp.append(matrix[i][7])
 
-phi_fonce_blas = np.ones(len(Re_fonce))
-for i in range(len(Re_fonce)):
-    phi_fonce_blas[i] = blasius(Re_fonce[i])
+print(Kp)
+print(Re)
+"""
+Re_A = [5242.905693,9643.201543,13856.25076,18724.66319,21346.11604]
+phi_A= [0.037323215,0.02961401 ,0.026999101,0.024641179,0.023463727]
+phi_A_blas = np.ones(len(Re_A))
 
-phi_fonce = np.array([0.03732542, 0.02961576, 0.02700069, 0.02464263, 0.023463727])
+for i in range(len(Re_A)):
+    phi_A_blas[i] = blasius(Re_A[i])
 
-phi_clair = np.array([-0.05411661,  0.01599677,  0.0271176 ,  0.01909234,  0.02285257])
-Re_clair = np.array([ 5242.75106656,  9642.91714027, 13855.84210447, 18724.11095199,
-       21345.48648527])
-
-
-plt.plot(Re_fonce,phi_fonce,"+k")
-#plt.plot(Re_clair, phi_clair, "+k")
-
-
+plt.plot(Re_A,phi_A,"+k")
+#plt.plot(Re_A,phi_A_blas,"+r")
+print(phi_A_blas[-1])
 
 
-
-
-
-plt.xlabel('Re [-]')
-plt.ylabel(r'$\Phi$ [-]', rotation = 0)
-
-
-#plt.savefig('./images/moody_fonce.pdf')
 
 plt.show()
+
 
 
 
